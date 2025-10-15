@@ -1,0 +1,15 @@
+name: Build Android APK
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Build with Buildozer
+      uses: artem-ryabov/buildozer-action@v1
+      with:
+        buildozer-version: stable
+        work-dir: .
+        build-target: android debug
