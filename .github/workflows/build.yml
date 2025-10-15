@@ -9,21 +9,12 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
 
-    - name: Setup Android SDK
-      uses: android-actions/setup-android@v3
-      with:
-        packages: |
-          build-tools;34.0.0
-          platform-tools
-          platforms;android-34
-          ndk;25.1.8937393
-
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
         python-version: '3.11'
 
-    - name: Install dependencies
+    - name: Install system dependencies
       run: |
         sudo apt update
         sudo apt install -y git zip unzip openjdk-17-jdk autoconf libtool pkg-config zlib1g-dev libncurses-dev cmake libffi-dev libssl-dev python3-pip
@@ -33,12 +24,6 @@ jobs:
         python -m pip install --upgrade pip
         pip install buildozer cython
 
-    - name: Configure Buildozer to use system Android SDK
-      run: |
-        export ANDROIDSDK="$HOME/android-sdk"
-        export ANDROIDNDK="$HOME/android-ndk"
-        buildozer android clean
-
-    - name: Build APK
+    - name: Build APK (let Buildozer handle Android SDK)
       run: |
         buildozer -v android debug
